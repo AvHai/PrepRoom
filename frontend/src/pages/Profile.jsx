@@ -23,6 +23,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useFetch } from "@/hooks/use-fetch";
 import Loading from "@/components/Loading";
 import { IoCameraOutline } from "react-icons/io5";
+import { setUser } from "@/redux/user/userSlice";
+
 const Profile = () => {
   const user = useSelector((state) => state.user);
   const {
@@ -39,7 +41,7 @@ const Profile = () => {
     name: z.string().min(3, "Name must be atleast 3 character long"),
     email: z.string().email(),
     bio: z.string().min(4, "Bio must be atleast 4 character long"),
-    password: z.string(),
+    //password: z.string(),
   });
 
   const form = useForm({
@@ -63,26 +65,35 @@ const Profile = () => {
   }, [userData]);
 
  
-  async function onSubmit(values) {
+async function onSubmit(values) {
     try {
+      if (!userData || !userData.user) {
+        return showToast("error", "User data is not available.");
+      }
+
+      const formData = new FormData();
+      // if (file) {
+      //   formData.append("file", file);
+      // }
+      formData.append("data", JSON.stringify(values));
       const response = await fetch(
-        `${getEnv("VITE_API_BASE_URL")}/auth/login`,
+        `${getEnv("VITE_API_BASE_URL")}/user/update-user/${userData.user._id}`,
         {
-          method: "post",
-          headers: { "Content-type": "application/json" },
+          method: "put",
           credentials: "include",
-          body: JSON.stringify(values),
+          body: formData,
         }
       );
+
       const data = await response.json();
       if (!response.ok) {
-        return showToast("error", data.message);
+        return showToast("error", data.message || "Failed to update user data.");
       }
+
       dispatch(setUser(data.user));
-      navigate(RouteIndex);
-      showToast("success", data.message);
+      showToast("success", data.message || "User data updated successfully.");
     } catch (error) {
-      showToast("error", error.message);
+      showToast("error", error.message || "An error occurred while updating.");
     }
   }
   if (loading) return <Loading />;

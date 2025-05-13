@@ -47,8 +47,8 @@ const OpportunityCard = ({ opportunity }) => {
   }
 
   return (
-    <Card className="card-glow h-full flex flex-col hover:shadow-md transition-shadow duration-300">
-      <CardHeader className="pb-3 pt-4">
+    <Card className="card-glow flex flex-col hover:shadow-md transition-shadow duration-300 h-full">
+      <CardHeader className="pb-1 pt-1 ">
         <div className="flex justify-between items-start">
           <div>
             <Badge
@@ -98,7 +98,7 @@ const OpportunityCard = ({ opportunity }) => {
       </CardContent>
       <CardFooter className="pt-4 flex-col gap-3 border-t border-border">
         <div className="flex items-center gap-2 w-full">
-          <Avatar className="h-6 w-6">
+          <Avatar className="h-4 w-4">
             {author.avatar ? (
               <AvatarImage src={author.avatar} alt={author.name} />
             ) : (

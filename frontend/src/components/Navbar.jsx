@@ -15,7 +15,7 @@ import {
   Info,
 } from "lucide-react";
 import React from "react";
-import { RouteIndex, RouteProfile, RouteSignIn } from "@/helpers/RouteName";
+import { RouteIndex, RouteMyPage, RouteProfile, RouteSignIn } from "@/helpers/RouteName";
 import { useDispatch, useSelector } from "react-redux";
 import {
   DropdownMenu,
@@ -35,7 +35,8 @@ const navItems = [
   { to: "/", label: "Home", icon: Home },
   { to: "/interviews", label: "Interview Blogs", icon: BookOpen },
   { to: "/opportunities", label: "Opportunities", icon: Briefcase },
-  { to: "/submit", label: "Submit", icon: Briefcase },
+  { to: "/submit", label: "Submit", icon: PenSquare },
+  { to: RouteMyPage, label: "My Page", icon: User },
   { to: "/about", label: "About", icon: Info },
 ];
 
@@ -85,7 +86,7 @@ const Navbar = () => {
             {navItems
   .filter(
     (item) =>
-      user.isLoggedIn || (!user.isLoggedIn && item.label !== "Submit")
+      user.isLoggedIn || (!user.isLoggedIn && item.label !== "Submit" && item.label !== "My Page") 
   )
   .map((item) => (
     <NavLink
