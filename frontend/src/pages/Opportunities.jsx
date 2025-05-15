@@ -2,97 +2,13 @@ import { useEffect, useState } from 'react';
 import SearchAndFilter from '@/components/shared/SearchAndFilter';
 import OpportunityCard from '@/components/shared/OpportunityCard';
 
-const mockOpportunities = [
-  {
-    id: '1',
-    company: { id: 'google', name: 'Google' },
-    role: 'Software Engineer, New Grad',
-    type: 'full-time',
-    location: 'Bangalore, India',
-    stipend: '₹27,00,000/year',
-    applicationDeadline: '2024-05-30',
-    applyLink: 'https://careers.google.com',
-    eligibility: 'B.Tech/B.E., M.Tech/M.E. in Computer Science or related field',
-    description: 'Join Google as a Software Engineer and work on products that impact millions of users...',
-    author: { id: 'user1', name: 'Campus Team' },
-    postedOn: '2024-04-01'
-  },
-  {
-    id: '2',
-    company: { id: 'microsoft', name: 'Microsoft' },
-    role: 'Data Science Intern',
-    type: 'internship',
-    location: 'Hyderabad, India',
-    stipend: '₹80,000/month',
-    applicationDeadline: '2024-05-01',
-    applyLink: 'https://careers.microsoft.com',
-    eligibility: 'Pursuing B.Tech/B.E., M.Tech/M.E. in Computer Science, Statistics, or related field',
-    description: "Work with Microsoft's data science team to solve real-world problems...",
-    author: { id: 'user2', name: 'HR Team' },
-    postedOn: '2024-03-15'
-  },
-  {
-    id: '3',
-    company: { id: 'amazon', name: 'Amazon' },
-    role: 'Product Manager',
-    type: 'full-time',
-    location: 'Remote, India',
-    stipend: '₹22,00,000/year',
-    applicationDeadline: '2024-06-15',
-    applyLink: 'https://amazon.jobs',
-    eligibility: 'MBA or equivalent with 0-2 years of experience',
-    description: "Drive product development for Amazon's e-commerce platform...",
-    author: { id: 'user3', name: 'Recruiter' },
-    postedOn: '2024-04-10'
-  },
-  {
-    id: '4',
-    company: { id: 'apple', name: 'Apple' },
-    role: 'iOS Developer Intern',
-    type: 'internship',
-    location: 'Bangalore, India',
-    stipend: '₹75,000/month',
-    applicationDeadline: '2024-04-30',
-    applyLink: 'https://apple.com/careers',
-    eligibility: 'Pursuing B.Tech/B.E. in Computer Science with knowledge of Swift',
-    description: "Join Apple's iOS development team for a summer internship...",
-    author: { id: 'user4', name: 'University Recruiter' },
-    postedOn: '2024-03-20'
-  },
-  {
-    id: '5',
-    company: { id: 'meta', name: 'Meta' },
-    role: 'Frontend Engineer',
-    type: 'full-time',
-    location: 'Remote',
-    stipend: '₹25,00,000/year',
-    applicationDeadline: '2024-05-15',
-    applyLink: 'https://meta.com/careers',
-    eligibility: 'B.Tech/B.E. in Computer Science or related field with 0-2 years of experience',
-    description: "Build the next generation of Meta's web interfaces...",
-    author: { id: 'user5', name: 'Tech Recruiter' },
-    postedOn: '2024-03-25'
-  },
-  {
-    id: '6',
-    company: { id: 'microsoft', name: 'Microsoft' },
-    role: 'Product Manager, Azure',
-    type: 'full-time',
-    location: 'Hyderabad, India',
-    stipend: '₹24,00,000/year',
-    applicationDeadline: '2024-06-01',
-    applyLink: 'https://careers.microsoft.com',
-    eligibility: 'MBA with technical background, 0-3 years of experience',
-    description: "Drive product strategy for Microsoft's Azure cloud services...",
-    author: { id: 'user6', name: 'Azure Team' },
-    postedOn: '2024-04-05'
-  }
-];
+
 
 const Opportunities = () => {
   const [opportunities, setOpportunities] = useState([]);
   const [filteredOpportunities, setFilteredOpportunities] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({});
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_BASE_URL}/opportunity/`, {
@@ -109,47 +25,40 @@ const Opportunities = () => {
   }, []);
 
 
-  const handleFilterChange = (filters) => {
-    let results = [...mockOpportunities];
+   const filterAndSearch = (filters, query) => {
+    let results = [...opportunities];
 
     if (filters.company) {
-      results = results.filter(item => item.company.id === filters.company);
+      results = results.filter(item => item?.company?.id === filters.company);
     }
     if (filters.type) {
-      results = results.filter(item => item.type === filters.type);
+      results = results.filter(item => item?.type === filters.type);
     }
     if (filters.location) {
-      results = results.filter(item => item.location.includes(filters.location));
+      results = results.filter(item => item?.location?.toLowerCase().includes(filters.location.toLowerCase()));
     }
 
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
+    if (query) {
+      const lowerQuery = query.toLowerCase();
       results = results.filter(item =>
-        item.role.toLowerCase().includes(query) ||
-        item.description.toLowerCase().includes(query) ||
-        item.company.name.toLowerCase().includes(query) ||
-        item.location.toLowerCase().includes(query)
+        item?.role?.toLowerCase().includes(lowerQuery) ||
+        item?.description?.toLowerCase().includes(lowerQuery) ||
+        item?.company?.name?.toLowerCase().includes(lowerQuery) ||
+        item?.location?.toLowerCase().includes(lowerQuery)
       );
     }
 
     setFilteredOpportunities(results);
   };
 
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    filterAndSearch(newFilters, searchQuery);
+  };
+
   const handleSearchChange = (query) => {
     setSearchQuery(query);
-
-    let results = [...mockOpportunities];
-    if (query) {
-      const searchLower = query.toLowerCase();
-      results = results.filter(item =>
-        item.role.toLowerCase().includes(searchLower) ||
-        item.description.toLowerCase().includes(searchLower) ||
-        item.company.name.toLowerCase().includes(searchLower) ||
-        item.location.toLowerCase().includes(searchLower)
-      );
-    }
-
-    setFilteredOpportunities(results);
+    filterAndSearch(filters, query);
   };
 
   return (

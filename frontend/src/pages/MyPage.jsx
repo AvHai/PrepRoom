@@ -13,90 +13,11 @@ import { useEffect } from "react";
 import { RouteProfile } from "@/helpers/RouteName";
 import { Link } from "react-router-dom";
 
-// Mock data for user profile
-const mockUser = {
-  id: "user1",
-  name: "Jane Smith",
-  email: "jane.smith@example.com",
-  bio: "Software Engineer with 2 years of experience. Passionate about web development and sharing knowledge with the community.",
-  avatar: undefined,
-};
 
-// Mock interview experiences by user
-const mockUserInterviews = [
-  {
-    id: "101",
-    title: "My Google Frontend Interview",
-    company: {
-      id: "google",
-      name: "Google",
-    },
-    role: {
-      id: "frontend-developer",
-      name: "Frontend Developer",
-    },
-    date: "2023-11-15",
-    difficultyLevel: "hard",
-    tags: [
-      { id: "javascript", name: "JavaScript" },
-      { id: "react", name: "React" },
-      { id: "dsa", name: "DSA" },
-    ],
-    author: {
-      id: "user1",
-      name: "Jane Smith",
-    },
-    content: "My Google interview experience was challenging but rewarding...",
-  },
-  {
-    id: "102",
-    title: "Microsoft SDE Interview Experience",
-    company: {
-      id: "microsoft",
-      name: "Microsoft",
-    },
-    role: {
-      id: "software-engineer",
-      name: "Software Engineer",
-    },
-    date: "2024-01-20",
-    difficultyLevel: "medium",
-    tags: [
-      { id: "system-design", name: "System Design" },
-      { id: "coding", name: "Coding" },
-    ],
-    author: {
-      id: "user1",
-      name: "Jane Smith",
-    },
-    content: "The Microsoft interview process consisted of several rounds...",
-  },
-];
+const mockUserInterviews=[]
+const mockUserOpportunities=[]
 
-// Mock opportunities posted by user
-const mockUserOpportunities = [
-  {
-    id: "201",
-    company: {
-      id: "amazon",
-      name: "Amazon",
-    },
-    role: "Frontend Engineer",
-    type: "full-time",
-    location: "remote",
-    stipend: "₹20,00,000/year",
-    applicationDeadline: "2024-05-15",
-    applyLink: "https://amazon.jobs",
-    eligibility:
-      "B.Tech/B.E. in Computer Science or related field with knowledge of React",
-    description: "We are looking for a frontend engineer to join our team...",
-    author: {
-      id: "user1",
-      name: "Jane Smith",
-    },
-    postedOn: "2024-03-01",
-  },
-];
+
 
 const MyPage = () => {
   const user = useSelector((state) => state.user);

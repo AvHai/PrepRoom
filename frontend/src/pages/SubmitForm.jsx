@@ -33,12 +33,12 @@ import { Calendar } from "@/components/ui/calendar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RouteOpportunity } from "@/helpers/RouteName";
+import { RouteInterview, RouteOpportunity } from "@/helpers/RouteName";
 import { showToast } from "@/helpers/showToast";
 import { getEnv } from "@/helpers/getEnv";
 import { useSelector } from "react-redux";
 
-// Mock data
+
 const companyOptions = [
   { id: "google", name: "Google" },
   { id: "microsoft", name: "Microsoft" },
@@ -141,20 +141,6 @@ const SubmitForm = () => {
     },
   });
 
-  //Interview Submit Function
-  const onInterviewSubmit = (data) => {
-    // In a real application, we would send this data to an API
-    console.log("Interview form data:", data);
-
-    // toast({
-    //   title: "Interview Experience Submitted",
-    //   description: "Thank you for sharing your experience!"
-    // })
-
-    // Reset form and navigate
-    interviewForm.reset();
-    navigate("/interviews");
-  };
 
   // Opportunity form
   const opportunityForm = useForm({
@@ -208,6 +194,44 @@ async function onOpportunitySubmit(values) {
     showToast("error", error.message);
   }
 }
+//Interview Submit Function
+async function onInterviewSubmit(values) {
+
+  try {
+    const userId = user.user._id 
+    
+
+    const payload = {
+      ...values,
+      userId: user.user._id, 
+      interviewDate: new Date(values.interviewDate).toISOString(),
+    };
+    
+
+    const response = await fetch(
+      `${getEnv("VITE_API_BASE_URL")}/interviews/create`,
+      {
+        method: "post",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+    
+    if (!response.ok) {
+      return showToast("error", data.message);
+    }
+
+    interviewForm.reset();
+    navigate(RouteInterview);
+    showToast("success", data.message);
+  } catch (error) {
+    showToast("error", error.message);
+  }
+}
 
   return (
     <div>
@@ -225,13 +249,14 @@ async function onOpportunitySubmit(values) {
         onValueChange={setActiveTab}
         className="w-full flex justify-center items-center"
       >
-        <TabsList className="flex justify-center items-center mb-8">
+        <TabsList className="flex justify-center items-center mb-8 w-full">
           <TabsTrigger value="interview">Interview Experience</TabsTrigger>
           <TabsTrigger value="opportunity">Job Opportunity</TabsTrigger>
         </TabsList>
 
         {/* Interview Experience Form */}
-        <TabsContent value="interview">
+        <TabsContent value="interview" className='w-full'>
+          <div className="px-4 md:px-8 " >
           <Form {...interviewForm}>
             <form
               onSubmit={interviewForm.handleSubmit(onInterviewSubmit)}
@@ -460,18 +485,22 @@ async function onOpportunitySubmit(values) {
                 )}
               />
 
-              <Button
+              <div className="justify-center  flex items-center">
+                <Button
                 type="submit"
                 className="w-full md:w-auto flex justify-center items-center"
               >
                 Submit Interview Experience
               </Button>
+              </div>
             </form>
           </Form>
+          </div>
         </TabsContent>
 
         {/* Job Opportunity Form */}
-        <TabsContent value="opportunity">
+        <TabsContent value="opportunity" className='w-full'>
+          <div className="px-4 md:px-8">
           <Form {...opportunityForm}>
             <form
               onSubmit={opportunityForm.handleSubmit(onOpportunitySubmit)}
@@ -707,6 +736,7 @@ async function onOpportunitySubmit(values) {
               </div>
             </form>
           </Form>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

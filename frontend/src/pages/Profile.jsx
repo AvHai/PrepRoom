@@ -15,7 +15,7 @@ import React, { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { RouteIndex } from "@/helpers/RouteName";
+import { RouteIndex, RouteMyPage } from "@/helpers/RouteName";
 import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,8 +24,10 @@ import { useFetch } from "@/hooks/use-fetch";
 import Loading from "@/components/Loading";
 import { IoCameraOutline } from "react-icons/io5";
 import { setUser } from "@/redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const {
     data:userData,
@@ -90,15 +92,16 @@ async function onSubmit(values) {
         return showToast("error", data.message || "Failed to update user data.");
       }
 
+      showToast("success", "User data updated successfully.");
       dispatch(setUser(data.user));
-      showToast("success", data.message || "User data updated successfully.");
+      navigate(RouteMyPage)
     } catch (error) {
       showToast("error", error.message || "An error occurred while updating.");
     }
   }
   if (loading) return <Loading />;
   return (
-    <Card className="max-w-screen-md mx-auto">
+    <Card className="max-w-screen-md mx-auto relative bg-black text-white card-glow h-full flex flex-col transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl hover:shadow-amber-500/10 hover:bg-gradient-to-br hover:from-black hover:to-[#0f0f0f]">
       <CardContent>
         <div className="flex justify-center items-center mt-10">
           <Avatar className="w-28 h-28 relative group">

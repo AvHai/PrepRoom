@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 import AuthRoute from './routes/AuthRoute.js'
 import UserRoute from './routes/UserRoute.js'
 import OpportunityRoute from './routes/OpportunityRoute.js'
-
+import InterviewRoute from './routes/InterviewRoute.js'
 dotenv.config({
     path : ".env"
 })
@@ -27,6 +27,7 @@ app.use(cors({
 app.use('/api/auth', AuthRoute)
 app.use('/api/user',UserRoute)
 app.use('/api/opportunity', OpportunityRoute)
+app.use('/api/interviews',InterviewRoute)
 
 
 mongoose.connect(process.env.MONGODB_URL,{dbName:'PrepRoom'})

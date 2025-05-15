@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider } from "@/components/theme-provider"
 import Layout from "./layout/Layout"
 import React from "react"
-import { RouteBlog, RouteBlogAdd, RouteBlogEdit, RouteIndex, RouteMyPage, RouteOpportunity, RouteProfile, RouteSignIn, RouteSignUp } from "./helpers/RouteName"
+import {  RouteIndex, RouteInterview, RouteMyPage, RouteOpportunity, RouteProfile, RouteSignIn, RouteSignUp, RouteSubmit } from "./helpers/RouteName"
 import  Index  from "./pages/Index"
 import Interviews from "./pages/Interviews"
 import SubmitForm from "./pages/SubmitForm"
@@ -18,15 +18,11 @@ function App() {
       <Routes>
         <Route path={RouteIndex} element={<Layout />}>
           <Route index element={<Index />} />
-          <Route path={RouteBlog} element={<Interviews />} />
-          <Route path={RouteBlogAdd} element={<Interviews />} />
-          <Route path={RouteBlogEdit()} element={<Interviews />} />
-
-            {/* <Route path="/interviews/:id" element={<InterviewDetail />} /> */}
             <Route path={RouteOpportunity} element={<Opportunities />} />
-            <Route path="/submit" element={<SubmitForm />} />
-           <Route path={RouteMyPage} element={<MyPage/>} />
+            <Route path={RouteSubmit} element={<SubmitForm />} />
            <Route path={RouteProfile} element={<Profile/>} />
+           <Route path={RouteInterview} element={<Interviews/>} />
+           <Route path={RouteMyPage} element={<MyPage/>} />
         </Route>
         <Route path={RouteSignIn} element ={<Signin/>} />
         <Route path={RouteSignUp} element={<SignUp/>}/>
