@@ -1,39 +1,42 @@
-import { useState } from "react"
-import { useSearchParams, useNavigate } from "react-router-dom"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import { useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from "@/components/ui/select"
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-//import { useToast } from "@/hooks/use-toast"
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RouteOpportunity } from "@/helpers/RouteName";
+import { showToast } from "@/helpers/showToast";
+import { getEnv } from "@/helpers/getEnv";
+import { useSelector } from "react-redux";
 
 // Mock data
 const companyOptions = [
@@ -42,8 +45,8 @@ const companyOptions = [
   { id: "amazon", name: "Amazon" },
   { id: "apple", name: "Apple" },
   { id: "meta", name: "Meta" },
-  { id: "other", name: "Other" }
-]
+  { id: "other", name: "Other" },
+];
 
 const roleOptions = [
   { id: "software-engineer", name: "Software Engineer" },
@@ -53,8 +56,8 @@ const roleOptions = [
   { id: "frontend-developer", name: "Frontend Developer" },
   { id: "backend-developer", name: "Backend Developer" },
   { id: "full-stack-developer", name: "Full Stack Developer" },
-  { id: "other", name: "Other" }
-]
+  { id: "other", name: "Other" },
+];
 
 const tagOptions = [
   { id: "dsa", name: "DSA" },
@@ -66,8 +69,8 @@ const tagOptions = [
   { id: "statistics", name: "Statistics" },
   { id: "javascript", name: "JavaScript" },
   { id: "react", name: "React" },
-  { id: "css", name: "CSS" }
-]
+  { id: "css", name: "CSS" },
+];
 
 const locationOptions = [
   { id: "remote", name: "Remote" },
@@ -77,8 +80,8 @@ const locationOptions = [
   { id: "mumbai", name: "Mumbai, India" },
   { id: "chennai", name: "Chennai, India" },
   { id: "pune", name: "Pune, India" },
-  { id: "other", name: "Other" }
-]
+  { id: "other", name: "Other" },
+];
 
 // Interview form schema
 const interviewFormSchema = z.object({
@@ -90,19 +93,19 @@ const interviewFormSchema = z.object({
     .string()
     .min(50, { message: "Experience must be at least 50 characters." }),
   difficultyLevel: z.enum(["easy", "medium", "hard"], {
-    required_error: "Please select difficulty level."
+    required_error: "Please select difficulty level.",
   }),
   tags: z
     .array(z.string())
-    .min(1, { message: "Please select at least one tag." })
-})
+    .min(1, { message: "Please select at least one tag." }),
+});
 
 // Opportunity form schema
 const opportunityFormSchema = z.object({
   companyId: z.string({ required_error: "Please select a company." }),
   role: z.string().min(5, { message: "Role must be at least 5 characters." }),
   type: z.enum(["full-time", "internship"], {
-    required_error: "Please select job type."
+    required_error: "Please select job type.",
   }),
   location: z.string({ required_error: "Please select a location." }),
   stipend: z.string().optional(),
@@ -113,15 +116,16 @@ const opportunityFormSchema = z.object({
     .min(10, { message: "Eligibility must be at least 10 characters." }),
   description: z
     .string()
-    .min(50, { message: "Description must be at least 50 characters." })
-})
+    .min(50, { message: "Description must be at least 50 characters." }),
+});
 
 const SubmitForm = () => {
-  const [searchParams] = useSearchParams()
+  const user = useSelector((state) => state.user);
+  const [searchParams] = useSearchParams();
   const defaultTab =
-    searchParams.get("type") === "opportunity" ? "opportunity" : "interview"
-  const [activeTab, setActiveTab] = useState(defaultTab)
-  const navigate = useNavigate()
+    searchParams.get("type") === "opportunity" ? "opportunity" : "interview";
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  const navigate = useNavigate();
   //const { toast } = useToast()
 
   // Interview form
@@ -133,9 +137,24 @@ const SubmitForm = () => {
       roleId: "",
       experience: "",
       difficultyLevel: undefined,
-      tags: []
-    }
-  })
+      tags: [],
+    },
+  });
+
+  //Interview Submit Function
+  const onInterviewSubmit = (data) => {
+    // In a real application, we would send this data to an API
+    console.log("Interview form data:", data);
+
+    // toast({
+    //   title: "Interview Experience Submitted",
+    //   description: "Thank you for sharing your experience!"
+    // })
+
+    // Reset form and navigate
+    interviewForm.reset();
+    navigate("/interviews");
+  };
 
   // Opportunity form
   const opportunityForm = useForm({
@@ -148,37 +167,47 @@ const SubmitForm = () => {
       stipend: "",
       applyLink: "",
       eligibility: "",
-      description: ""
+      description: "",
+    },
+  });
+
+  //Opportunity Submit Function
+async function onOpportunitySubmit(values) {
+  try {
+    const userId = user.user._id 
+    const username = user.user.name
+
+    const payload = {
+      ...values,
+      userId,
+      username 
+    };
+
+    console.log("Opportunity form data:", payload);
+
+    const response = await fetch(
+      `${getEnv("VITE_API_BASE_URL")}/opportunity/`,
+      {
+        method: "post",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return showToast("error", data.message);
     }
-  })
 
-  const onInterviewSubmit = data => {
-    // In a real application, we would send this data to an API
-    console.log("Interview form data:", data)
-
-    // toast({
-    //   title: "Interview Experience Submitted",
-    //   description: "Thank you for sharing your experience!"
-    // })
-
-    // Reset form and navigate
-    interviewForm.reset()
-    navigate("/interviews")
+    opportunityForm.reset();
+    navigate(RouteOpportunity);
+    showToast("success", data.message);
+  } catch (error) {
+    showToast("error", error.message);
   }
-
-  const onOpportunitySubmit = data => {
-    // In a real application, we would send this data to an API
-    console.log("Opportunity form data:", data)
-
-    // toast({
-    //   title: "Job Opportunity Submitted",
-    //   description: "Thank you for sharing this opportunity!"
-    // })
-
-    // Reset form and navigate
-    opportunityForm.reset()
-    navigate("/opportunities")
-  }
+}
 
   return (
     <div>
@@ -189,7 +218,6 @@ const SubmitForm = () => {
           community
         </p>
       </div>
-
 
       <Tabs
         defaultValue={defaultTab}
@@ -243,7 +271,7 @@ const SubmitForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {companyOptions.map(company => (
+                          {companyOptions.map((company) => (
                             <SelectItem key={company.id} value={company.id}>
                               {company.name}
                             </SelectItem>
@@ -271,7 +299,7 @@ const SubmitForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {roleOptions.map(role => (
+                          {roleOptions.map((role) => (
                             <SelectItem key={role.id} value={role.id}>
                               {role.name}
                             </SelectItem>
@@ -313,7 +341,7 @@ const SubmitForm = () => {
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={date =>
+                          disabled={(date) =>
                             date > new Date() || date < new Date("2000-01-01")
                           }
                           initialFocus
@@ -390,7 +418,7 @@ const SubmitForm = () => {
                       <FormLabel className="text-base">Tags</FormLabel>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                      {tagOptions.map(tag => (
+                      {tagOptions.map((tag) => (
                         <FormField
                           key={tag.id}
                           control={interviewForm.control}
@@ -404,17 +432,17 @@ const SubmitForm = () => {
                                 <FormControl>
                                   <Checkbox
                                     checked={field.value?.includes(tag.id)}
-                                    onCheckedChange={checked => {
+                                    onCheckedChange={(checked) => {
                                       return checked
                                         ? field.onChange([
                                             ...field.value,
-                                            tag.id
+                                            tag.id,
                                           ])
                                         : field.onChange(
                                             field.value?.filter(
-                                              value => value !== tag.id
+                                              (value) => value !== tag.id
                                             )
-                                          )
+                                          );
                                     }}
                                   />
                                 </FormControl>
@@ -422,7 +450,7 @@ const SubmitForm = () => {
                                   {tag.name}
                                 </FormLabel>
                               </FormItem>
-                            )
+                            );
                           }}
                         />
                       ))}
@@ -432,7 +460,10 @@ const SubmitForm = () => {
                 )}
               />
 
-              <Button type="submit" className="w-full md:w-auto flex justify-center items-center">
+              <Button
+                type="submit"
+                className="w-full md:w-auto flex justify-center items-center"
+              >
                 Submit Interview Experience
               </Button>
             </form>
@@ -463,7 +494,7 @@ const SubmitForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {companyOptions.map(company => (
+                          {companyOptions.map((company) => (
                             <SelectItem key={company.id} value={company.id}>
                               {company.name}
                             </SelectItem>
@@ -545,7 +576,7 @@ const SubmitForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {locationOptions.map(location => (
+                          {locationOptions.map((location) => (
                             <SelectItem key={location.id} value={location.id}>
                               {location.name}
                             </SelectItem>
@@ -605,7 +636,7 @@ const SubmitForm = () => {
                             mode="single"
                             selected={field.value}
                             onSelect={field.onChange}
-                            disabled={date => date < new Date()}
+                            disabled={(date) => date < new Date()}
                             initialFocus
                             className="pointer-events-auto"
                           />
@@ -670,16 +701,16 @@ const SubmitForm = () => {
                 )}
               />
               <div className="flex justify-center items-center">
-              <Button type="submit" className="w-full md:w-auto ">
-                Submit Job Opportunity
-              </Button>
+                <Button type="submit" className="w-full md:w-auto ">
+                  Submit Job Opportunity
+                </Button>
               </div>
             </form>
           </Form>
         </TabsContent>
       </Tabs>
     </div>
-  )
-}
+  );
+};
 
-export default SubmitForm
+export default SubmitForm;

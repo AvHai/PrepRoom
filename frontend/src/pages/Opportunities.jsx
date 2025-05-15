@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchAndFilter from '@/components/shared/SearchAndFilter';
 import OpportunityCard from '@/components/shared/OpportunityCard';
 
@@ -90,8 +90,24 @@ const mockOpportunities = [
 ];
 
 const Opportunities = () => {
-  const [filteredOpportunities, setFilteredOpportunities] = useState(mockOpportunities);
+  const [opportunities, setOpportunities] = useState([]);
+  const [filteredOpportunities, setFilteredOpportunities] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/opportunity/`, {
+      credentials: 'include',
+    })
+      .then(res => res.json())
+      .then(data => {
+        setOpportunities(data);
+        setFilteredOpportunities(data);
+      })
+      .catch(err => {
+        console.error('Failed to fetch opportunities:', err);
+      });
+  }, []);
+
 
   const handleFilterChange = (filters) => {
     let results = [...mockOpportunities];

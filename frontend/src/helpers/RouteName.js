@@ -3,6 +3,7 @@ export const RouteSignIn = '/sign-in'
 export const RouteSignUp = '/sign-up'
 export const RouteProfile = '/profile'
 export const RouteMyPage = '/mypage'
+export const RouteOpportunity = '/opportunities'
 
 export const RouteBlog = '/blog'
 export const RouteBlogAdd = '/blog/add'

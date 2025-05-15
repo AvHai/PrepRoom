@@ -2,20 +2,19 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { format } from "date-fns"
-import { Calendar, MapPin, ExternalLink } from "lucide-react"
+import { Calendar, MapPin, ExternalLink, BadgeIndianRupee } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const OpportunityCard = ({ opportunity }) => {
   const {
-    id,
-    company,
+    companyId,
     role,
     type,
     location,
     stipend,
     applicationDeadline,
     applyLink,
-    author
+    username,
   } = opportunity
 
   // Format dates
@@ -53,11 +52,11 @@ const OpportunityCard = ({ opportunity }) => {
           <div>
             <Badge
               variant="outline"
-              className="mb-2 border-primary/40 bg-primary/5"
+              className="text-md mb-4 border-primary/40 bg-primary/5 capitalize"
             >
-              {company.name}
+              {companyId}
             </Badge>
-            <h3 className="text-lg font-semibold leading-tight hover:text-primary transition-colors duration-200">
+            <h3 className="text-2xl font-semibold leading-tight hover:text-primary transition-colors duration-200">
               {role}
             </h3>
           </div>
@@ -67,19 +66,20 @@ const OpportunityCard = ({ opportunity }) => {
         </div>
       </CardHeader>
       <CardContent className="pb-2 grow">
-        <div className="flex items-center text-sm text-muted-foreground mb-2">
+        <div className="flex items-center text-md mb-2 capitalize">
           <MapPin className="h-4 w-4 mr-1" />
           <span>{location}</span>
         </div>
 
         {stipend && (
-          <div className="text-sm mb-2">
-            {type === "internship" ? "Stipend" : "Salary"}:{" "}
-            <span className="font-medium">{stipend}</span>
+          <div className=" flex items-center text-md mb-2">
+            <BadgeIndianRupee className="h-4 w-4 mr-1" />
+            {type === "internship" ? " Stipend" : " Salary "}:{"  "}
+            <span className="font-medium">&nbsp;{stipend} </span>
           </div>
         )}
 
-        <div className="flex items-center text-sm text-muted-foreground">
+        <div className="flex items-center text-md ">
           <Calendar className="h-4 w-4 mr-1" />
           <span>
             Deadline: {formattedDeadline}
@@ -98,15 +98,11 @@ const OpportunityCard = ({ opportunity }) => {
       </CardContent>
       <CardFooter className="pt-4 flex-col gap-3 border-t border-border">
         <div className="flex items-center gap-2 w-full">
-          <Avatar className="h-4 w-4">
-            {author.avatar ? (
-              <AvatarImage src={author.avatar} alt={author.name} />
-            ) : (
-              <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
-            )}
+          <Avatar className="h-8 w-8">
+              <AvatarFallback>{getInitials(username)}</AvatarFallback>
           </Avatar>
           <span className="text-sm text-muted-foreground">
-            Posted by {author.name}
+            Posted by {username}
           </span>
         </div>
 
