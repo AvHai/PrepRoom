@@ -9,18 +9,14 @@ import { useSelector } from "react-redux";
 import { getEnv } from "@/helpers/getEnv";
 import { useFetch } from "@/hooks/use-fetch";
 import Loading from "@/components/Loading";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RouteProfile } from "@/helpers/RouteName";
 import { Link } from "react-router-dom";
 
-
-const mockUserInterviews=[]
-const mockUserOpportunities=[]
-
-
-
 const MyPage = () => {
   const user = useSelector((state) => state.user);
+  const [interviews, setInterviews] = useState([]);
+  const [opportunities, setOpportunities] = useState([]);
   const {
     data: userData,
     loading,
@@ -33,7 +29,7 @@ const MyPage = () => {
   );
   useEffect(() => {}, [userData]);
 
-  // Get initials for avatar fallback
+  
   const getInitials = (name) => {
     return name
       .split(" ")
@@ -41,6 +37,69 @@ const MyPage = () => {
       .join("")
       .toUpperCase();
   };
+
+  // useEffect(() => {
+  //   fetch(`${import.meta.env.VITE_API_BASE_URL}/interviews/`, {
+  //     credentials: 'include',
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       setInterviews(data);
+  //     })
+  //     .catch(err => {
+  //       console.error('Failed to fetch interviews:', err);
+  //     });
+  // }, []);
+  
+
+  //   useEffect(() => {
+  //   fetch(`${import.meta.env.VITE_API_BASE_URL}/opportunity/`, {
+  //     credentials: 'include',
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       setOpportunities(data);
+  //     })
+  //     .catch(err => {
+  //       console.error('Failed to fetch opportunities:', err);
+  //     });
+  // }, []);
+
+  useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/interviews/`, {
+    credentials: 'include',
+  })
+    .then(res => res.json())
+    .then(data => {
+      const myInterviews = data.filter(
+        (interview) => interview.author._id === user.user.id
+      );      
+      setInterviews(myInterviews);
+    })
+    .catch(err => {
+      console.error('Failed to fetch interviews:', err);
+    });
+}, [user.user._id]);
+
+useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/opportunity/`, {
+    credentials: 'include',
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      
+      const myOpportunities = data.filter(
+        (opportunity) => opportunity.userId._id === user.user._id
+      );
+      setOpportunities(myOpportunities);
+    })
+    .catch(err => {
+      console.error('Failed to fetch opportunities:', err);
+    });
+}, [user.user._id]);
+
+
   if (loading) return <Loading />;
   return (
     <div>
@@ -113,9 +172,9 @@ const MyPage = () => {
                 <h2 className="text-xl font-medium mb-4">
                   Your Interview Experiences
                 </h2>
-                {mockUserInterviews.length > 0 ? (
+                {interviews.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {mockUserInterviews.map((interview) => (
+                    {interviews.map((interview) => (
                       <InterviewCard key={interview.id} interview={interview} />
                     ))}
                   </div>
@@ -138,9 +197,9 @@ const MyPage = () => {
                 <h2 className="text-sm font-medium mb-4">
                   Job Opportunities You've Posted
                 </h2>
-                {mockUserOpportunities.length > 0 ? (
+                {opportunities.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-                    {mockUserOpportunities.map((opportunity) => (
+                    {opportunities.map((opportunity) => (
                       <OpportunityCard className='h-20'
                         key={opportunity.id}
                         opportunity={opportunity}

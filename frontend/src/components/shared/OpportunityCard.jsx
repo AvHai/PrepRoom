@@ -46,8 +46,8 @@ const OpportunityCard = ({ opportunity }) => {
   }
 
   return (
-    <Card className="card-glow flex flex-col hover:shadow-md transition-shadow duration-300 h-full">
-      <CardHeader className="pb-1 pt-1 ">
+    <Card className="relative bg-black text-white card-glow h-full flex flex-col transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl hover:shadow-amber-500/10 hover:bg-gradient-to-br hover:from-black hover:to-[#0f0f0f]">
+      <CardHeader className="pb-3 pt-4 ">
         <div className="flex justify-between items-start">
           <div>
             <Badge
