@@ -59,3 +59,19 @@ export const showAllInterview = async (req, res) => {
     res.status(err.statusCode).json({ message: err.message });
   }
 };
+
+
+export const getInterviewById = async (req, res, next) => {
+  try {
+    const interview = await Interview.findById(req.params.id);
+
+    if (!interview) {
+      throw handleError(404, "Interview not found");
+    }
+
+    res.json(interview);
+  } catch (err) {
+    console.error(err);
+    next(err); // Pass the error to centralized error handler
+  }
+};

@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider } from "@/components/theme-provider"
 import Layout from "./layout/Layout"
 import React from "react"
-import {  RouteIndex, RouteInterview, RouteMyPage, RouteOpportunity, RouteProfile, RouteSignIn, RouteSignUp, RouteSubmit } from "./helpers/RouteName"
+import {  RouteIndex, RouteInterview, RouteInterviewId, RouteMyPage, RouteOpportunity, RouteProfile, RouteSignIn, RouteSignUp, RouteSubmit } from "./helpers/RouteName"
 import  Index  from "./pages/Index"
 import Interviews from "./pages/Interviews"
 import SubmitForm from "./pages/SubmitForm"
@@ -11,6 +11,7 @@ import { SignUp } from "./pages/SignUp"
 import { Signin } from "./pages/Signin"
 import Profile from "./pages/Profile"
 import MyPage from "./pages/MyPage"
+import InterviewDetails from "./pages/InterviewDetails"
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -22,6 +23,7 @@ function App() {
             <Route path={RouteSubmit} element={<SubmitForm />} />
            <Route path={RouteProfile} element={<Profile/>} />
            <Route path={RouteInterview} element={<Interviews/>} />
+           <Route path={RouteInterviewId} element={<InterviewDetails />} />
            <Route path={RouteMyPage} element={<MyPage/>} />
         </Route>
         <Route path={RouteSignIn} element ={<Signin/>} />
