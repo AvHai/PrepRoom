@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { ArrowLeft } from "lucide-react"
 import { RouteInterview } from "@/helpers/RouteName"
+import LikeCount from "@/components/LikeCount"
 
 export default function InterviewDetails() {
   const { id, author } = useParams()
@@ -121,7 +122,7 @@ export default function InterviewDetails() {
             )}
             {formattedInterviewDate && (
               <span className="text-sm text-muted-foreground">
-                {formattedInterviewDate}
+                <LikeCount interviewid={interview._id} />
               </span>
             )}
           </div>
@@ -138,7 +139,7 @@ export default function InterviewDetails() {
               </AvatarFallback>
             </Avatar>
             <span className="text-muted-foreground">
-              Author ID: {interview.author}
+              Author ID: {interview.author?.name}
             </span>
           </div>
         </CardHeader>

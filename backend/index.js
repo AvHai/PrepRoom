@@ -7,6 +7,7 @@ import AuthRoute from './routes/AuthRoute.js'
 import UserRoute from './routes/UserRoute.js'
 import OpportunityRoute from './routes/OpportunityRoute.js'
 import InterviewRoute from './routes/InterviewRoute.js'
+import LikeRoute from './routes/LikeRoute.js'
 dotenv.config({
     path : ".env"
 })
@@ -28,6 +29,7 @@ app.use('/api/auth', AuthRoute)
 app.use('/api/user',UserRoute)
 app.use('/api/opportunity', OpportunityRoute)
 app.use('/api/interviews',InterviewRoute)
+app.use('/api/interview-like',LikeRoute)
 
 
 mongoose.connect(process.env.MONGODB_URL,{dbName:'PrepRoom'})
