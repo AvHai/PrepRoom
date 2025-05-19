@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PenSquare, User } from "lucide-react";
-import InterviewCard from "@/components/shared/InterviewCard";
-import OpportunityCard from "@/components/shared/OpportunityCard";
+import InterviewProfileCard from "@/components/shared/InterviewProfileCard";
+import OpportunityProfileCard from "@/components/shared/OpportunityProfileCard";
 import { useSelector } from "react-redux";
 import { getEnv } from "@/helpers/getEnv";
 import { useFetch } from "@/hooks/use-fetch";
@@ -29,7 +29,6 @@ const MyPage = () => {
   );
   useEffect(() => {}, [userData]);
 
-  
   const getInitials = (name) => {
     return name
       .split(" ")
@@ -50,7 +49,6 @@ const MyPage = () => {
   //       console.error('Failed to fetch interviews:', err);
   //     });
   // }, []);
-  
 
   //   useEffect(() => {
   //   fetch(`${import.meta.env.VITE_API_BASE_URL}/opportunity/`, {
@@ -66,39 +64,83 @@ const MyPage = () => {
   // }, []);
 
   useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_BASE_URL}/interviews/`, {
-    credentials: 'include',
-  })
-    .then(res => res.json())
-    .then(data => {
-      const myInterviews = data.filter(
-        (interview) => interview.author._id === user.user.id
-      );      
-      setInterviews(myInterviews);
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/interviews/`, {
+      credentials: "include",
     })
-    .catch(err => {
-      console.error('Failed to fetch interviews:', err);
-    });
-}, [user.user._id]);
+      .then((res) => res.json())
+      .then((data) => {
+        const myInterviews = data.filter(
+          (interview) => interview.author._id === user.user.id
+        );
+        setInterviews(myInterviews);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch interviews:", err);
+      });
+  }, [user.user._id]);
 
-useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_BASE_URL}/opportunity/`, {
-    credentials: 'include',
-  })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-      
-      const myOpportunities = data.filter(
-        (opportunity) => opportunity.userId._id === user.user._id
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/opportunity/`, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+
+        const myOpportunities = data.filter(
+          (opportunity) => opportunity.userId._id === user.user._id
+        );
+        setOpportunities(myOpportunities);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch opportunities:", err);
+      });
+  }, [user.user._id]);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/interviews/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
       );
-      setOpportunities(myOpportunities);
-    })
-    .catch(err => {
-      console.error('Failed to fetch opportunities:', err);
-    });
-}, [user.user._id]);
 
+      if (!res.ok) throw new Error("Failed to delete interview");
+
+      // Update local state after deletion
+      const updatedInterviews = interviews.filter(
+        (interview) => interview._id !== id
+      );
+      setInterviews(updatedInterviews);
+      filterAndSearch(filters, searchQuery); // reapply filters to updated list
+    } catch (err) {
+      console.error("Error deleting interview:", err);
+    }
+  };
+  const handleDeleteOp = async (id) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/opportunity/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      if (!res.ok) throw new Error("Failed to delete opportunity");
+
+      // Update local state after deletion
+      const updatedOp = opportunities.filter(
+        (opportunity) => opportunity._id !== id
+      );
+      setOpportunities(updatedOp);
+      filterAndSearch(filters, searchQuery); // reapply filters to updated list
+    } catch (err) {
+      console.error("Error deleting opportunity:", err);
+    }
+  };
 
   if (loading) return <Loading />;
   return (
@@ -135,7 +177,7 @@ useEffect(() => {
                 {userData && userData.user ? userData.user.email : "Loading..."}
               </p>
             </CardHeader>
-            <CardContent className='h-42.5'>
+            <CardContent className="h-42.5">
               <p className="text-2xl mb-8">
                 {userData && userData.user ? userData.user.bio : "Loading..."}
               </p>
@@ -175,7 +217,11 @@ useEffect(() => {
                 {interviews.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {interviews.map((interview) => (
-                      <InterviewCard key={interview.id} interview={interview} />
+                      <InterviewProfileCard
+                        key={interview.id}
+                        interview={interview}
+                        onDelete={handleDelete}
+                      />
                     ))}
                   </div>
                 ) : (
@@ -200,9 +246,11 @@ useEffect(() => {
                 {opportunities.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
                     {opportunities.map((opportunity) => (
-                      <OpportunityCard className='h-20'
+                      <OpportunityProfileCard
+                        className="h-20"
                         key={opportunity.id}
                         opportunity={opportunity}
+                        onDelete={handleDeleteOp}
                       />
                     ))}
                   </div>

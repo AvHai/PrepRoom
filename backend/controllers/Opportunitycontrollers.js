@@ -52,12 +52,22 @@ export const getOpportunities = async (req, res) => {
 //   }
 // };
 
-// // Delete
-// export const deleteOpportunity = async (req, res) => {
+// Delete
+export const deleteOpportunity = async (req, res) => {
+  try {
+    await Opportunity.findByIdAndDelete(req.params.id);
+    res.json({ message: "Opportunity deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// export const deleteInterview = async (req, res) => {
 //   try {
-//     await Opportunity.findByIdAndDelete(req.params.id);
-//     res.json({ message: "Opportunity deleted" });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
+//     const { id } = req.params;
+//     const deleted = await Interview.findByIdAndDelete(id);
+//     if (!deleted) return res.status(404).json({ message: "Not found" });
+//     res.status(200).json({ message: "Deleted" });
+//   } catch (err) {
+//     res.status(500).json({ message: "Server error" });
 //   }
 // };
