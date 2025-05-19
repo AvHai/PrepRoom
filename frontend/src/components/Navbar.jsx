@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { FaRegUser, FaPlus} from "react-icons/fa";
+import { FaRegUser, FaPlus } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
 import {
@@ -15,7 +15,12 @@ import {
   Info,
 } from "lucide-react";
 import React from "react";
-import { RouteIndex, RouteMyPage, RouteProfile, RouteSignIn } from "@/helpers/RouteName";
+import {
+  RouteIndex,
+  RouteMyPage,
+  RouteProfile,
+  RouteSignIn,
+} from "@/helpers/RouteName";
 import { useDispatch, useSelector } from "react-redux";
 import {
   DropdownMenu,
@@ -26,10 +31,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import usericon from '../assets/avatar.png'
+import usericon from "../assets/avatar.png";
 import { removeUser } from "@/redux/user/userSlice";
 import { showToast } from "@/helpers/showToast";
 import { getEnv } from "@/helpers/getEnv";
+import { ModeToggle } from "./modetoggle";
 
 const navItems = [
   { to: "/", label: "Home", icon: Home },
@@ -44,28 +50,28 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const [isOpen, setIsOpen] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const toggleMenu = () => setIsOpen(!isOpen);
-  const handleLogout = async() => {
-     try {
-              const response = await fetch(
-                `${getEnv('VITE_API_BASE_URL')}/auth/logout`,
-                {
-                  method: "get",
-                  credentials: 'include',
-                }
-              );
-              const data = await response.json();
-              if (!response.ok) {
-                return showToast("error", data.message);
-              }
-              dispatch(removeUser())
-              navigate(RouteIndex);
-              showToast("success", data.message);
-            } catch (error) {
-              showToast("error", error.message);
-            }
-  }
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(
+        `${getEnv("VITE_API_BASE_URL")}/auth/logout`,
+        {
+          method: "get",
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        return showToast("error", data.message);
+      }
+      dispatch(removeUser());
+      navigate(RouteIndex);
+      showToast("success", data.message);
+    } catch (error) {
+      showToast("error", error.message);
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border">
@@ -84,23 +90,27 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-6">
             {navItems
-  .filter(
-    (item) =>
-      user.isLoggedIn || (!user.isLoggedIn && item.label !== "Submit" && item.label !== "My Page") 
-  )
-  .map((item) => (
-    <NavLink
-      key={item.label}
-      to={item.to}
-      className={({ isActive }) =>
-        `text-sm font-medium transition-colors hover:text-primary/90 ${
-          isActive ? "text-primary" : "text-foreground/70"
-        }`
-      }
-    >
-      {item.label}
-    </NavLink>
-  ))}
+              .filter(
+                (item) =>
+                  user.isLoggedIn ||
+                  (!user.isLoggedIn &&
+                    item.label !== "Submit" &&
+                    item.label !== "My Page")
+              )
+              .map((item) => (
+                <NavLink
+                  key={item.label}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `text-sm font-medium transition-colors hover:text-primary/90 ${
+                      isActive ? "text-primary" : "text-foreground/70"
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            <ModeToggle />
             {!user.isLoggedIn ? (
               <Button variant="default" size="sm">
                 <NavLink to={RouteSignIn}>Login</NavLink>
@@ -110,39 +120,42 @@ const Navbar = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <Avatar>
-                      <AvatarImage src= {usericon} />
+                      <AvatarImage src={usericon} />
                       <AvatarFallback>U</AvatarFallback>
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuLabel className='cursor-pointer'>
+                    <DropdownMenuLabel className="cursor-pointer">
                       <p>{user.user.name}</p>
                       <p className="text-sm">{user.user.email}</p>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild className='cursor-pointer'>
-                      <NavLink to = {RouteProfile}>
-                      <FaRegUser/>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <NavLink to={RouteProfile}>
+                        <FaRegUser />
                         My Profile
                       </NavLink>
-                      </DropdownMenuItem>
-                    <DropdownMenuItem asChild className='cursor-pointer'>
-                      <NavLink to = "/submit">
-                      <FaPen/>
-                       Write Blog
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <NavLink to="/submit">
+                        <FaPen />
+                        Write Blog
                       </NavLink>
-                      </DropdownMenuItem>
-                    <DropdownMenuItem asChild className='cursor-pointer'>
-                      <NavLink to = "/submit">
-                      <FaPlus/>
-                       Add Internship
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <NavLink to="/submit">
+                        <FaPlus />
+                        Add Internship
                       </NavLink>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator/>
-                    <DropdownMenuItem onClick={handleLogout} className='cursor-pointer'>
-                      <IoIosLogOut color="red"/>
-                       Logout
-                      </DropdownMenuItem>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="cursor-pointer"
+                    >
+                      <IoIosLogOut color="red" />
+                      Logout
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>

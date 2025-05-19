@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
-const ThemeProviderContext = createContext({
+const initialState = {
   theme: "system",
-  setTheme: () => null,
-})
+  setTheme: () => null
+}
+
+const ThemeProviderContext = createContext(initialState)
 
 export function ThemeProvider({
   children,
@@ -17,6 +19,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement
+
     root.classList.remove("light", "dark")
 
     if (theme === "system") {
@@ -24,6 +27,7 @@ export function ThemeProvider({
         .matches
         ? "dark"
         : "light"
+
       root.classList.add(systemTheme)
       return
     }
@@ -33,10 +37,10 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (newTheme) => {
-      localStorage.setItem(storageKey, newTheme)
-      setTheme(newTheme)
-    },
+    setTheme: theme => {
+      localStorage.setItem(storageKey, theme)
+      setTheme(theme)
+    }
   }
 
   return (
@@ -49,7 +53,7 @@ export function ThemeProvider({
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext)
 
-  if (!context)
+  if (context === undefined)
     throw new Error("useTheme must be used within a ThemeProvider")
 
   return context

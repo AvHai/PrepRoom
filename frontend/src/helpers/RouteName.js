@@ -7,6 +7,7 @@ export const RouteOpportunity = '/opportunities'
 export const RouteInterview = '/interviews'
 export const RouteSubmit = '/submit'
 export const RouteInterviewId = '/interviews/:id'
+export const RouteAbout ='/about'
 
 // export const RouteBlog = '/blog'
 // export const RouteBlogAdd = '/blog/add'
