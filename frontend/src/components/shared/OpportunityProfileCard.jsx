@@ -4,6 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { format } from "date-fns"
 import { Calendar, MapPin, ExternalLink, BadgeIndianRupee, Edit, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { showToast } from "@/helpers/showToast"
 
 const OpportunityProfileCard = ({ opportunity, onDelete }) => {
   const {
@@ -48,7 +49,7 @@ const OpportunityProfileCard = ({ opportunity, onDelete }) => {
   const handleEdit = e => {
     e.stopPropagation()
     // Your edit logic here, e.g., open modal or redirect
-    alert("Edit clicked for " + role)
+    showToast('info', "Coming Soon")
   }
 
   return (

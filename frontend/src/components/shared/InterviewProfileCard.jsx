@@ -42,7 +42,7 @@ const getDifficultyColor = (level) => {
   }
 };
 
-const InterviewProfileCard = ({ interview, onEdit, onDelete }) => {
+const InterviewProfileCard = ({ interview, onEdit, onDelete, }) => {
   // Using _id as id, and destructure other fields
   const {
     _id: id,

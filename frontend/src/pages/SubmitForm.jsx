@@ -40,48 +40,168 @@ import { useSelector } from "react-redux";
 
 
 const companyOptions = [
+  { id: "tcs", name: "Tata Consultancy Services (TCS)" },
+  { id: "infosys", name: "Infosys" },
+  { id: "wipro", name: "Wipro" },
+  { id: "hcl", name: "HCL Technologies" },
+  { id: "techmahindra", name: "Tech Mahindra" },
+  { id: "lti", name: "LTIMindtree" },
+  { id: "persistent", name: "Persistent Systems" },
+  { id: "mphasis", name: "Mphasis" },
+  { id: "birlasoft", name: "Birlasoft" },
+  { id: "hexaware", name: "Hexaware Technologies" },
+  { id: "cognizant", name: "Cognizant" },
+  { id: "capgemini", name: "Capgemini" },
+  { id: "accenture", name: "Accenture" },
+  { id: "ibm", name: "IBM" },
+  { id: "oracle", name: "Oracle" },
+  { id: "deloitte", name: "Deloitte" },
+  { id: "sap", name: "SAP" },
   { id: "google", name: "Google" },
   { id: "microsoft", name: "Microsoft" },
   { id: "amazon", name: "Amazon" },
   { id: "apple", name: "Apple" },
   { id: "meta", name: "Meta" },
-  { id: "other", name: "Other" },
+  { id: "zoho", name: "Zoho Corporation" },
+  { id: "thoughtworks", name: "ThoughtWorks" },
+  { id: "hitachi", name: "Hitachi Vantara" },
+  { id: "atos", name: "Atos Syntel" },
+  { id: "virtusa", name: "Virtusa" },
+  { id: "infosys_bpm", name: "Infosys BPM" },
+  { id: "valuelabs", name: "ValueLabs" },
+  { id: "other", name: "Other" }
 ];
 
 const roleOptions = [
+  // Technical Roles
   { id: "software-engineer", name: "Software Engineer" },
-  { id: "product-manager", name: "Product Manager" },
-  { id: "data-scientist", name: "Data Scientist" },
-  { id: "ux-designer", name: "UX Designer" },
+  { id: "full-stack-developer", name: "Full Stack Developer" },
   { id: "frontend-developer", name: "Frontend Developer" },
   { id: "backend-developer", name: "Backend Developer" },
-  { id: "full-stack-developer", name: "Full Stack Developer" },
-  { id: "other", name: "Other" },
+  { id: "mobile-developer", name: "Mobile App Developer" },
+  { id: "android-developer", name: "Android Developer" },
+  { id: "ios-developer", name: "iOS Developer" },
+  { id: "data-scientist", name: "Data Scientist" },
+  { id: "data-analyst", name: "Data Analyst" },
+  { id: "machine-learning-engineer", name: "Machine Learning Engineer" },
+  { id: "devops-engineer", name: "DevOps Engineer" },
+  { id: "cloud-engineer", name: "Cloud Engineer" },
+  { id: "qa-engineer", name: "QA Engineer" },
+  { id: "test-automation-engineer", name: "Test Automation Engineer" },
+  { id: "site-reliability-engineer", name: "Site Reliability Engineer (SRE)" },
+  { id: "database-administrator", name: "Database Administrator (DBA)" },
+  { id: "system-administrator", name: "System Administrator" },
+  { id: "network-engineer", name: "Network Engineer" },
+  { id: "it-support", name: "IT Support Engineer" },
+  { id: "security-analyst", name: "Cybersecurity Analyst" },
+
+  // Design & Product Roles
+  { id: "ui-designer", name: "UI Designer" },
+  { id: "ux-designer", name: "UX Designer" },
+  { id: "technical-writer", name: "Technical Writer" },
+
+  // Management & MBA-Specific Roles
+  { id: "product-manager", name: "Product Manager" },
+  { id: "project-manager", name: "Project Manager" },
+  { id: "business-analyst", name: "Business Analyst" },
+  { id: "marketing-manager", name: "Marketing Manager" },
+  { id: "sales-manager", name: "Sales Manager" },
+  { id: "strategy-consultant", name: "Strategy Consultant" },
+  { id: "operations-manager", name: "Operations Manager" },
+  { id: "hr-manager", name: "HR Manager" },
+  { id: "finance-manager", name: "Finance Manager" },
+  { id: "management-consultant", name: "Management Consultant" },
+  { id: "investment-banker", name: "Investment Banker" },
+  { id: "product-marketing-manager", name: "Product Marketing Manager" },
+  { id: "supply-chain-manager", name: "Supply Chain Manager" },
+  { id: "category-manager", name: "Category Manager" },
+  { id: "brand-manager", name: "Brand Manager" },
+  { id: "scrum-master", name: "Scrum Master" },
+
+  // Other
+  { id: "other", name: "Other" }
 ];
 
 const tagOptions = [
+  // Core Technical
   { id: "dsa", name: "DSA" },
-  { id: "system-design", name: "System Design" },
-  { id: "hr-round", name: "HR Round" },
   { id: "coding", name: "Coding" },
-  { id: "behavioral", name: "Behavioral" },
+  { id: "system-design", name: "System Design" },
+  { id: "low-level-design", name: "Low-Level Design (LLD)" },
+  { id: "high-level-design", name: "High-Level Design (HLD)" },
+  { id: "oops", name: "OOPs Concepts" },
+  { id: "dbms", name: "DBMS" },
+  { id: "os", name: "Operating Systems" },
+  { id: "cn", name: "Computer Networks" },
+  { id: "sql", name: "SQL" },
+  { id: "api-design", name: "API Design" },
+
+  // Web & Frontend Specific
+  { id: "javascript", name: "JavaScript" },
+  { id: "typescript", name: "TypeScript" },
+  { id: "react", name: "React" },
+  { id: "angular", name: "Angular" },
+  { id: "html", name: "HTML" },
+  { id: "css", name: "CSS" },
+  { id: "web-performance", name: "Web Performance" },
+
+  // Backend / DevOps
+  { id: "nodejs", name: "Node.js" },
+  { id: "java", name: "Java" },
+  { id: "python", name: "Python" },
+  { id: "spring", name: "Spring Framework" },
+  { id: "microservices", name: "Microservices" },
+  { id: "docker", name: "Docker" },
+  { id: "kubernetes", name: "Kubernetes" },
+  { id: "aws", name: "AWS" },
+
+  // Data & ML Roles
   { id: "ml", name: "Machine Learning" },
   { id: "statistics", name: "Statistics" },
-  { id: "javascript", name: "JavaScript" },
-  { id: "react", name: "React" },
-  { id: "css", name: "CSS" },
+  { id: "deep-learning", name: "Deep Learning" },
+  { id: "data-visualization", name: "Data Visualization" },
+  { id: "pandas", name: "Pandas" },
+  { id: "numpy", name: "NumPy" },
+
+  // MBA / Non-Tech / Soft Skills
+  { id: "aptitude", name: "Aptitude" },
+  { id: "case-study", name: "Case Study" },
+  { id: "guesstimate", name: "Guesstimates" },
+  { id: "behavioral", name: "Behavioral" },
+  { id: "hr-round", name: "HR Round" },
+  { id: "leadership", name: "Leadership Questions" },
+  { id: "communication", name: "Communication Skills" },
+
+  // Misc
+  { id: "resume", name: "Resume Screening" },
+  { id: "group-discussion", name: "Group Discussion" },
+  { id: "other", name: "Other" }
 ];
+
 
 const locationOptions = [
   { id: "remote", name: "Remote" },
   { id: "bangalore", name: "Bangalore, India" },
   { id: "hyderabad", name: "Hyderabad, India" },
-  { id: "delhi", name: "Delhi, India" },
+  { id: "delhi-ncr", name: "Delhi NCR, India" },
   { id: "mumbai", name: "Mumbai, India" },
   { id: "chennai", name: "Chennai, India" },
   { id: "pune", name: "Pune, India" },
-  { id: "other", name: "Other" },
+  { id: "noida", name: "Noida, India" },
+  { id: "gurgaon", name: "Gurgaon, India" },
+  { id: "kolkata", name: "Kolkata, India" },
+  { id: "ahmedabad", name: "Ahmedabad, India" },
+  { id: "jaipur", name: "Jaipur, India" },
+  { id: "kochi", name: "Kochi, India" },
+  { id: "bhubaneswar", name: "Bhubaneswar, India" },
+  { id: "trivandrum", name: "Trivandrum, India" },
+  { id: "indore", name: "Indore, India" },
+  { id: "lucknow", name: "Lucknow, India" },
+  { id: "bhopal", name: "Bhopal, India" },
+  { id: "nagpur", name: "Nagpur, India" },
+  { id: "other", name: "Other" }
 ];
+
 
 // Interview form schema
 const interviewFormSchema = z.object({

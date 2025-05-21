@@ -10,8 +10,9 @@ import { getEnv } from "@/helpers/getEnv";
 import { useFetch } from "@/hooks/use-fetch";
 import Loading from "@/components/Loading";
 import { useEffect, useState } from "react";
-import { RouteProfile } from "@/helpers/RouteName";
+import { RouteProfile, RouteSubmit } from "@/helpers/RouteName";
 import { Link } from "react-router-dom";
+import { showToast } from "@/helpers/showToast";
 
 const MyPage = () => {
   const user = useSelector((state) => state.user);
@@ -141,7 +142,9 @@ const MyPage = () => {
       console.error("Error deleting opportunity:", err);
     }
   };
-
+const handleEditInterview = () => {
+    showToast("info", "Coming Soon")
+  };
   if (loading) return <Loading />;
   return (
     <div>
@@ -221,6 +224,7 @@ const MyPage = () => {
                         key={interview.id}
                         interview={interview}
                         onDelete={handleDelete}
+                        onEdit={handleEditInterview}
                       />
                     ))}
                   </div>
@@ -232,7 +236,11 @@ const MyPage = () => {
                     <p className="text-muted-foreground mb-4">
                       Share your interview experiences to help others
                     </p>
-                    <Button>Share Interview Experience</Button>
+                    <Button>
+                      <Link to={RouteSubmit}>
+                    Share Interview Experience
+                    </Link>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -251,6 +259,7 @@ const MyPage = () => {
                         key={opportunity.id}
                         opportunity={opportunity}
                         onDelete={handleDeleteOp}
+                        
                       />
                     ))}
                   </div>
@@ -262,7 +271,11 @@ const MyPage = () => {
                     <p className="text-muted-foreground mb-4">
                       Help others by sharing job opportunities
                     </p>
-                    <Button>Post a Job Opportunity</Button>
+                    <Button>
+                       <Link to={RouteSubmit}>
+                    Post a Job Opportunity
+                    </Link>
+                    </Button>
                   </div>
                 )}
               </div>

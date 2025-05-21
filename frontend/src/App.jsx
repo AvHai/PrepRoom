@@ -13,10 +13,12 @@ import Profile from "./pages/Profile"
 import MyPage from "./pages/MyPage"
 import InterviewDetails from "./pages/InterviewDetails"
 import About from "./pages/About"
+import ScrollToTop from "./layout/ScrollTop"
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
     <BrowserRouter>
+    <ScrollToTop /> 
       <Routes>
         <Route path={RouteIndex} element={<Layout />}>
           <Route index element={<Index />} />
