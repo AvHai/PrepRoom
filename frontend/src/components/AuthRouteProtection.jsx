@@ -1,10 +1,17 @@
+import { RouteIndex} from '@/helpers/RouteName'
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Navigate, Outlet } from 'react-router-dom'
 
 const AuthRouteProtection = () => {
-  return (
-    <Outlet/>
-  )
+  const user = useSelector(state=> state.user)
+  if(user && user.isLoggedIn){
+    return (
+      <Outlet/>
+    )
+  }else{
+    return <Navigate to={RouteIndex}/>
+  }
 }
 
 export default AuthRouteProtection

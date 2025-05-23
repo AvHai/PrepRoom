@@ -30,7 +30,7 @@ const InterviewCard = ({ interview }) => {
     roleId,
     interviewDate,
     difficultyLevel,
-    tags,
+    tags=[],
     author,
     title,
   } = interview;
@@ -91,16 +91,20 @@ const InterviewCard = ({ interview }) => {
             </Avatar>
             <span className="text-sm text-muted-foreground">{author.name}</span>
           </div>
-          <div className="flex flex-wrap gap-1">
-            {tags.slice(0, 2).map((tag) => (
-              <Badge
-                key={tag.id}
-                variant="secondary"
-                className="text-xs px-1.5"
-              >
-                {tag.name}
-              </Badge>
-            ))}
+          <div className="flex flex-wrap gap-1 mr-2">
+            {tags.length > 0 ? (
+              tags.slice(0, 2).map((tag, idx) => (
+                <Badge
+                  key={idx}
+                  variant="secondary"
+                  className="text-xs px-1.5"
+                >
+                  {tag}
+                </Badge>
+              ))
+            ) : (
+              <span className="text-xs text-muted-foreground">No tags</span>
+            )}
             {tags.length > 2 && (
               <Badge variant="secondary" className="text-xs px-1.5">
                 +{tags.length - 2}

@@ -13,7 +13,7 @@ const Hero = () => {
 
       <div className="container relative z-10 mx-auto px-4 text-center">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary to-secondary animate-fadeIn">
-          CareerConnect
+          CareersConnect
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 animate-fadeIn" style={{ animationDelay: "0.2s" }}>
           Share interview experiences and discover job opportunities to accelerate your career growth
@@ -37,4 +37,5 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default Hero
+

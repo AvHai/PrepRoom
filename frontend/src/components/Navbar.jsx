@@ -83,7 +83,7 @@ const Navbar = () => {
             className="flex items-center space-x-2 text-foreground"
           >
             <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600">
-              CareerConnect
+              CareersConnect
             </span>
           </NavLink>
 
