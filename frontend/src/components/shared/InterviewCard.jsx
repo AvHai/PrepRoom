@@ -49,7 +49,10 @@ const InterviewCard = ({ interview }) => {
 
   return (
     <Link to={`/interviews/${_id}`}>
-      <Card className="relative bg-black text-white card-glow h-full flex flex-col transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl hover:shadow-amber-500/10 hover:bg-gradient-to-br hover:from-black hover:to-[#0f0f0f]">
+      <Card className="relative h-full flex flex-col transition-all duration-300 transform hover:scale-[1.02] 
+  hover:shadow-2xl hover:shadow-[#e11d48]/30 
+  bg-yellow-50 text-black hover:bg-gray-50 
+  dark:bg-black dark:text-white dark:hover:bg-gradient-to-br dark:hover:from-black dark:hover:to-[#0f0f0f]">
         <CardHeader className="pb-3 pt-4">
           <div className="flex justify-between items-start">
             <div>
