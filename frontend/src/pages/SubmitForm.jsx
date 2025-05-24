@@ -236,7 +236,7 @@ const opportunityFormSchema = z.object({
     .min(10, { message: "Eligibility must be at least 10 characters." }),
   description: z
     .string()
-    .min(50, { message: "Description must be at least 50 characters." }),
+    .min(20, { message: "Description must be at least 20 characters." }),
 });
 
 const SubmitForm = () => {
@@ -271,6 +271,7 @@ const SubmitForm = () => {
       type: undefined,
       location: "",
       stipend: "",
+       applicationDeadline: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
       applyLink: "",
       eligibility: "",
       description: "",
